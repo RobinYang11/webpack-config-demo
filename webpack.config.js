@@ -20,6 +20,9 @@ const config = {
 		// }, // 打包前 清空输出目录 dist
 		path: path.resolve(__dirname, "./dist")
 	},
+	resolve:{
+		extensions: ['.js','.jsx']
+	},
 	devServer: {
 		static: {
 			directory: path.join(__dirname, 'dist')
