@@ -1,15 +1,16 @@
 const fs = require('fs');
 const path = require('path')
+const process = require('process');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
-const env = process.env.NODE_ENV;
 const pagePath = "./pages";
 const port = 3001;
 
 const config = {
 	entry: "/pages/index.js", //入口文件
-	mode:"development",  // 环境 development 开发环境   production 生成环境
+	mode: process.env.NODE_ENV,  // 环境 development 开发环境   production 生成环境
 	output: {
 		// library: "ROBIN", // 可以导出模块
 		filename: "[name].[hash].js", // 输出文件名称[name] //源文件名 [hash] //打包hash
