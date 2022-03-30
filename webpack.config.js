@@ -3,11 +3,13 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
+const env = process.env.NODE_ENV;
 const pagePath = "./pages";
 const port = 3001;
+
 const config = {
 	entry: "/pages/index.js", //入口文件
-	mode: "development",  // 环境 development 开发环境   production 生成环境
+	mode:"development",  // 环境 development 开发环境   production 生成环境
 	output: {
 		// library: "ROBIN", // 可以导出模块
 		filename: "[name].[hash].js", // 输出文件名称[name] //源文件名 [hash] //打包hash
@@ -18,8 +20,8 @@ const config = {
 		path: path.resolve(__dirname, "./dist")
 	},
 	devServer: {
-		static:{
-			directory:path.join(__dirname,'dist')
+		static: {
+			directory: path.join(__dirname, 'dist')
 		},
 		hot: true, //热更新
 		compress: true, // 静态资源 开启gzip 压缩
