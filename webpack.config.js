@@ -4,24 +4,26 @@ const process = require('process');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const pagePath = "./pages";
 const port = 3001;
+const host = "dev.panzitech.com"
 
 const config = {
 	entry: "/pages/index.js", //入口文件
 	mode: process.env.NODE_ENV,  // 环境 development 开发环境   production 生成环境
 	output: {
 		// library: "ROBIN", // 可以导出模块
-		filename: "[name].[hash].js", // 输出文件名称[name] //源文件名 [hash] //打包hash
+		filename: "[name].js", // 输出文件名称[name] //源文件名 [hash] //打包hash
 		// publicPath: "/static",
 		// clean: {  // 打包前清空目标目录
 		// 	keep: /ignored\/dir\//   //保留某些文件和目录
 		// }, // 打包前 清空输出目录 dist
 		path: path.resolve(__dirname, "./dist")
 	},
-	resolve:{
-		extensions: ['.js','.jsx']
+	resolve: {
+		extensions: ['.js', '.jsx'],
 	},
 	devServer: {
 		static: {
@@ -33,6 +35,15 @@ const config = {
 		// client: {
 		// 	logging: 'error'
 		// }
+		proxy: {
+			"/api": {
+				target: `https://${host}:9000`,
+				pathRewrite: { "^/api": "" },
+				changeOrigin: true,
+				secure: true
+			}
+		}
+
 	},
 	devtool: "eval",
 	/**一般设置eval 或者不设置 性能最好. 指定生成source map 的方式  sourcemap 参数表https://webpack.js.org/configuration/devtool/
@@ -80,9 +91,10 @@ const config = {
 		]
 	},
 	plugins: [
+		new BundleAnalyzerPlugin(),
 		new FriendlyErrorsWebpackPlugin({
 			compilationSuccessInfo: {
-				messages: [`靓仔你的程序运行在这里 http://localhost:${port}`],
+				messages: [`靓仔你的程序运行在这里 http://${host}:${port}`],
 				notes: ['!!!《盘子科技前端组》提醒你! 注意代码规范,提交代码之前多测几遍!  ^_^!']
 			},
 			onErrors: function (severity, errors) {
@@ -113,6 +125,8 @@ function setEntriesAndPlugins() {
 			})
 		)
 	})
+	entries['react'] = "react"
+	entries['react-dom'] = "react-dom"
 	config.entry = entries;
 }
 
